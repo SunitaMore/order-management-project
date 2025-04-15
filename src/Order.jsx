@@ -19,7 +19,7 @@ const Order = () => {
   const [grandTotals, setGrandTotals] = useState({ totalPrice: 0, totalItems: 0 });
 
 
-  
+  const [orderType, setOrderType] = useState("Dine-In");
   
 
   
@@ -483,7 +483,7 @@ updateSaleRecord(saleData);
                     <table width="220" border="0" cellpadding="0" cellspacing="0" align="left" class="col">
                       <tbody>
                         <tr>
-                          <td align="left"> <img src="http://www.supah.it/dribbble/017/logo.png" width="32" height="32" alt="logo" border="0" /></td>
+                          <td align="left"> <img src="https://live.staticflickr.com/65535/52254615722_a5fcea2524_b.jpg" width="80" height="32" alt="logo" border="0" /></td>
                         </tr>
                         <tr class="hiddenMobile">
                           <td height="40"></td>
@@ -508,7 +508,7 @@ updateSaleRecord(saleData);
                           <td height="5"></td>
                         </tr>
                         <tr>
-                          <td style="font-size: 21px; color: #ff0000; letter-spacing: -1px; font-family: 'Open Sans', sans-serif; line-height: 1; vertical-align: top; text-align: right;">
+                          <td style="font-size: 21px; color:rgb(7, 106, 131); letter-spacing: -1px; font-family: 'Open Sans', sans-serif; line-height: 1; vertical-align: top; text-align: right;">
                             Invoice
                           </td>
                         </tr>
@@ -592,7 +592,7 @@ updateSaleRecord(saleData);
             ${selectedCompany} ${product.product}
           </td>
            <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #646a6e; line-height: 18px; vertical-align: top; padding:10px 0;"><small>${product.amount}</small></td>
-          <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #646a6e; line-height: 18px; vertical-align: top; padding:10px 0;"><small>${product.inches}</small></td>
+          <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #646a6e; line-height: 18px; vertical-align: top; padding:10px 0;"><small>${product.size}</small></td>
           <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #646a6e; line-height: 18px; vertical-align: top; padding:10px 0;" align="center">${product.quantity}</td>
           <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #1e2b33; line-height: 18px; vertical-align: top; padding:10px 0;" align="right">₹${product.quantity * product.amount}</td>
         </tr>
@@ -1179,12 +1179,15 @@ const [isOpen, setIsOpen] = useState(false);
  </table>
 </div> */}
 
+
+
+
  {/* Stock Details - Right Side */}
 <div className="stock-details">
   {selectedCompany ? (
     <div>
       <h2 style={{ fontSize: "26px" }}>Products for {selectedCompany}</h2>
-      <div className="stock-grid">
+   <div className="stock-grid">
         {Array.isArray(products) && products.length > 0 ? (
           products.map((product, index) => {
             const selectedItem = selectedProducts.find((p) => p.id === product.id);
@@ -1203,10 +1206,10 @@ const [isOpen, setIsOpen] = useState(false);
                   margin: "5px"
                 }}
               >
-                <p><strong>Product:</strong> {product.product || "N/A"}</p>
+                <p><strong>Item:</strong> {product.product || "N/A"}</p>
                 <p><strong>Amount:</strong> ₹{product.amount || 0}</p>
-                <p><strong>Inches:</strong> {product.inches ? `${product.inches}"` : "N/A"}</p>
-                <p><strong>Available Stock:</strong> {selectedItem ? selectedItem.availableStock : product.Quantity || 0}</p>
+                <p><strong>Size:</strong> {product.size ? `${product.size}"` : "N/A"}</p>
+                <p><strong>Available Item:</strong> {selectedItem ? selectedItem.availableStock : product.Quantity || 0}</p>
               </div>
             );
           })
@@ -1220,8 +1223,14 @@ const [isOpen, setIsOpen] = useState(false);
   )}
 </div>
 
+
+
+
+
+
+
 {/* Selected Products Table */}
-{selectedProducts.length > 0 && (
+{/* {selectedProducts.length > 0 && (
   <div className="product-details-table">
     <div className="table_contain">
       <table border={1} cellPadding={9} cellSpacing={2}>
@@ -1293,9 +1302,130 @@ const [isOpen, setIsOpen] = useState(false);
 
       </table>
     </div>
+ */}
 
+<div className="product-details-table">
+    <div className="table_contain">
+      <table border={1} cellPadding={9} cellSpacing={2}>
+        <thead>
+          {/* Order Type Row Inside Table */}
+          <tr>
+            <th colSpan={9} style={{ textAlign: "left" }}>
+              <label style={{ marginRight: "20px" }}>
+                <input
+                  type="radio"
+                  name="orderType"
+                  value="Dine-In"
+                  checked={orderType === "Dine-In"}
+                  onChange={(e) => setOrderType(e.target.value)}
+                /> Dine-In
+              </label>
+              <label style={{ marginRight: "20px" }}>
+                <input
+                  type="radio"
+                  name="orderType"
+                  value="Delivery"
+                  checked={orderType === "Delivery"}
+                  onChange={(e) => setOrderType(e.target.value)}
+                /> Delivery
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="orderType"
+                  value="Pick-Up"
+                  checked={orderType === "Pick-Up"}
+                  onChange={(e) => setOrderType(e.target.value)}
+                /> Pick-Up
+              </label>
+            </th>
+          </tr>
 
+          {/* Show table headers only if Dine-In is selected */}
+          {orderType === "Dine-In" && (
+            <tr>
+              <th>Company</th>
+              <th>Product</th>
+              <th>Price</th>
+              <th>Size (Inches)</th>
+              <th>Items</th>
+              <th>Add items</th>
+              <th>Minus items</th>
+              <th>Total Price</th>
+              <th>Drop</th>
+            </tr>
+          )}
+        </thead>
 
+        {/* If Dine-In: show table rows, else show alternate UI */}
+        {orderType === "Dine-In" ? (
+          <tbody>
+            {selectedProducts.map((product, index) => (
+              <tr key={index}>
+                <td>{selectedCompany}</td>
+                <td>{product.product || "N/A"}</td>
+                <td>₹{product.amount || 0}</td>
+                <td>{product.size || "N/A"}</td>
+                <td>{product.quantity || 0}</td>
+                <td>
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      if (product.availableStock <= 0) {
+                        alert("Out of Stock! No more items can be selected.");
+                      } else {
+                        updateQuantity(product, 1);
+                      }
+                    }}
+                  >+</button>
+                </td>
+                <td>
+                  <button
+                    onClick={() => updateQuantity(product, -1)}
+                    disabled={product.quantity <= 1}
+                  >−</button>
+                </td>
+                <td>₹{(product.quantity * product.amount) || 0}</td>
+                <td>
+                  <button
+                    onClick={() => removeProduct(product)}
+                    style={{
+                      backgroundColor: "red",
+                      color: "white",
+                      border: "none",
+                      cursor: "pointer",
+                      marginLeft: "5px"
+                    }}
+                  >×</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        ) : (
+          <tbody>
+            <tr>
+              <td colSpan={9} style={{ textAlign: "center", padding: "20px" }}>
+                {orderType === "Delivery" && <div>🚚 Delivery Address Form or Details Here</div>}
+                {orderType === "Pick-Up" && <div>🏠 Pick-Up Location / Time Slot Selection Here</div>}
+              </td>
+            </tr>
+          </tbody>
+        )}
+
+        {/* Grand Total Row (only for Dine-In) */}
+        {orderType === "Dine-In" && (
+          <tfoot>
+            <tr>
+              <td colSpan={5} style={{ textAlign: "right" }}>Total Items:</td>
+              <td colSpan={2}>{getGrandTotals().totalItems || 0}</td>
+              <td>₹{getGrandTotals().totalPrice || 0}</td>
+              <td></td>
+            </tr>
+          </tfoot>
+        )}
+      </table>
+    </div>
+    
       
                 <div className="payment-section">
   <h3 style={{ marginTop: "40px" }}>Choose Payment Method</h3>
@@ -1432,7 +1562,7 @@ const [isOpen, setIsOpen] = useState(false);
                   </div>
                 
               
-            )}
+          
           </div>
         </div>
       );

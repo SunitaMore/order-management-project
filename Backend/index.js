@@ -60,16 +60,16 @@ app.post("/customer", async (req, res) => {
 
 // Route to Insert Product
 app.post("/stock_details", (req, res) => {
-  const {company, product, amount, inches, quantity} = req.body;
+  const {company, product, amount, size, quantity} = req.body;
 
 
-   if (!company || !product || !amount || !inches || !quantity ) {
+   if (!company || !product || !amount || !size || !quantity ) {
     return res.status(400).json({ error: "Please fill all fields" });
   }
   // console.log(req.body)
-  const sql = "INSERT INTO stock_details (company,product, amount, inches, Quantity) VALUES (?, ?, ?, ?, ?)";
+  const sql = "INSERT INTO stock_details (company,product, amount, size, Quantity) VALUES (?, ?, ?, ?, ?)";
 
-  db.query(sql, [company, product, amount, inches, quantity], (err, result) => {
+  db.query(sql, [company, product, amount, size, quantity], (err, result) => {
     if (err) {
       console.error("Error inserting product:", err);
       return res.status(500).json({ error: "Database error" });
@@ -81,7 +81,7 @@ app.post("/stock_details", (req, res) => {
 
 app.get("/api/stock", (req, res) => {
   const sql = `
-    SELECT id, company, product, amount, inches, Quantity
+    SELECT id, company, product, amount, size, Quantity
     FROM stock_details
   `;
 
@@ -118,7 +118,7 @@ app.post("/add-stock", (req, res) => {
     return res.json({ success: false, message: "All fields are required" });
   }
 
-  const insertQuery = `INSERT INTO stock_details (company, product, amount, inches, Quantity) VALUES (?, ?, ?, ?, ?)`;
+  const insertQuery = `INSERT INTO stock_details (company, product, amount, size, Quantity) VALUES (?, ?, ?, ?, ?)`;
 
   db.query(insertQuery, [company, name, amount, size, quantity], (err, result) => {
     if (err) {
@@ -166,7 +166,7 @@ app.get("/getStock", async (req, res) => {
 // API to Get Product Details by ID
 app.get("/product/:id", (req, res) => {
   const { id } = req.params;
-  const sql = "SELECT company, amount, inches, Quantity FROM stock_details WHERE id = ?";
+  const sql = "SELECT company, amount, size, Quantity FROM stock_details WHERE id = ?";
   
   db.query(sql, [id], (err, result) => {
     if (err) {
@@ -199,7 +199,7 @@ app.get("/api/company", (req, res) => {
     return res.status(400).json({ error: "Company is required" });
   }
 
-  const query = "SELECT id, product, amount, inches, Quantity FROM stock_details WHERE company = ?";
+  const query = "SELECT id, product, amount, size, Quantity FROM stock_details WHERE company = ?";
   db.query(query, [company], (err, results) => {
     if (err) {
       console.error("Error fetching products:", err);
@@ -274,10 +274,10 @@ app.post("/update-data", (req, res) => {
 //update stock after click update button in table that time open form fill update detail then click save
 app.put("/api/stock/:id", (req, res) => {
   const { id } = req.params;
-  const { company, product, inches, amount, Quantity } = req.body;
+  const { company, product, size, amount, Quantity } = req.body;
 
-  const sql = "UPDATE stock_details SET company=?, product=?, inches=?, amount=?, Quantity=? WHERE id=?";
-  db.query(sql, [company, product, inches, amount, Quantity, id], (err, result) => {
+  const sql = "UPDATE stock_details SET company=?, product=?, size=?, amount=?, Quantity=? WHERE id=?";
+  db.query(sql, [company, product, size, amount, Quantity, id], (err, result) => {
     if (err) {
       console.error("Error updating stock:", err);
       res.status(500).json({ message: "Database update failed" });

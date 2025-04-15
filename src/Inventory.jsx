@@ -757,7 +757,7 @@ const handleSelectProduct = (product) => {
     <input type="text" className="form-input" name="product"  value={selectedItem ? selectedItem.product : ""} onChange={handleChange1} />
 
     <label>Size (inches):</label>
-    <input type="text" className="form-input" name="inches"  value={selectedItem ? selectedItem.inches : ""} onChange={handleChange1} />
+    <input type="text" className="form-input" name="inches"  value={selectedItem ? selectedItem.size : ""} onChange={handleChange1} />
 
     <label>Amount:</label>
     <input type="text" className="form-input" name="amount"  value={selectedItem ? selectedItem.amount : ""} onChange={handleChange1} />
@@ -772,9 +772,9 @@ const handleSelectProduct = (product) => {
     <table className="custom-table">
       <thead>
         <tr>
-          <th className="table-header">Company Name</th>
-          <th className="table-header">Product Name</th>
-          <th className="table-header">Size (inches)</th>
+          <th className="table-header">Item Name</th>
+          <th className="table-header">Category Name</th>
+          <th className="table-header">Size </th>
           <th className="table-header">Amount</th>
           <th className="table-header">Quantity</th>
           <th className="table-header">Action</th>
@@ -786,7 +786,7 @@ const handleSelectProduct = (product) => {
             <tr key={index}>
               <td className="table-data">{item.company}</td>
               <td className="table-data">{item.product}</td>
-              <td className="table-data">{item.inches}</td>
+              <td className="table-data">{item.size}</td>
               <td className="table-data">₹{item.amount}</td>
               <td className="table-data">{item.Quantity}</td>
               <td className="table-data">
