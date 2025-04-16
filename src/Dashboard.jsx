@@ -15,21 +15,36 @@ const Dashboard = ({ setIsAuthenticated }) => {
 
   return (
     <div className="app-container">
-      <nav className="navbar">
-        <div className="navbar-content">
-          <ul className="navbar-tabs">
-            <li className={activeTab === "order" ? "active" : ""} onClick={() => setActiveTab("order")}>
-              Order Dashboard
-            </li>
-            <li className={activeTab === "inventory" ? "active" : ""} onClick={() => setActiveTab("inventory")}>
-              Inventory Dashboard
-            </li>
+     <nav className="navbar">
+  <div className="navbar-content" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+    
+    <ul className="navbar-tabs" style={{ display: "flex", listStyle: "none", margin: 0, padding: 0 }}>
+      <li className={activeTab === "order" ? "active" : ""} onClick={() => setActiveTab("order")}>
+        Order
+      </li>
+      <li className={activeTab === "inventory" ? "active" : ""} onClick={() => setActiveTab("inventory")}>
+        Inventory
+      </li>
+      <li className={activeTab === "menu" ? "active" : ""} onClick={() => setActiveTab("menu")}>
+        Menu
+      </li>
+      <li className={activeTab === "history" ? "active" : ""} onClick={() => setActiveTab("history")}>
+        History
+      </li>
+      <li className={activeTab === "reports" ? "active" : ""} onClick={() => setActiveTab("reports")}>
+        Reports
+      </li>
+      <li className={activeTab === "staff" ? "active" : ""} onClick={() => setActiveTab("staff")}>
+        Staff
+      </li>
+    </ul>
 
-            
-          </ul>
-          <button className="logout-button" onClick={handleLogout}>Logout</button>
-        </div>
-      </nav>
+    <button className="logout-button" onClick={handleLogout}>
+      Logout
+    </button>
+
+  </div>
+</nav>
 
       <div className="main-container">
         {activeTab === "order" ? <Order /> : <Inventory />}
