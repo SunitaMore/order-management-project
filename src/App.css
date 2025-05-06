@@ -786,3 +786,330 @@ button:hover {
   text-align: center;
   width: 23%; /* Adjust to fit 4 boxes in a row */
 }
+
+
+
+/* Navbar */
+/* Navbar styles */
+/* Navbar styling */
+.navbar2 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #f5f5f5;
+  padding: 16px;
+  border-bottom: 1px solid #ddd;
+}
+.nav-actions {
+  display: flex;
+  gap: 10px;
+}
+.nav-btn {
+  background-color: black;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 14px;
+  cursor: pointer;
+}
+
+.nav-btn:hover {
+  background-color: #4338ca;
+}
+
+/* Dropdown wrapper */
+.dropdown-wrapper {
+  position: relative;
+}
+
+/* Button to open dropdown */
+.dropdown-btn {
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 10px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+/* Dropdown list */
+.dropdown-list {
+  position: absolute;
+  top: 110%;
+  left: 0;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  z-index: 1000;
+  min-width: 160px;
+}
+
+/* List items */
+.dropdown-list li {
+  padding: 10px 14px;
+  cursor: pointer;
+}
+
+/* Hover effect */
+.dropdown-list li:hover {
+  background-color: #f0f0f0;
+}
+/* Table container */
+.table-container {
+  padding: 15px;
+}
+
+/* Table heading */
+.table-container h2 {
+  margin-bottom: 16px;
+}
+
+/* Table grid layout */
+.table-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 50px;
+}
+
+/* Table card styling */
+.table-card {
+  background-color:rgb(226, 215, 221);
+  color: white;
+  padding: 30px;
+  text-align: center;
+  border-radius: 20px;
+  font-weight:  bold;
+  font-size: 20px;
+  border: 3px solid black;
+  color: #0e0103;
+  
+
+}
+
+/* General page styling */
+/* Button Styles */
+button {
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+/* Create New Menu Button */
+button.bg-blue-500 {
+  background-color: #3b82f6;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+}
+
+button.bg-blue-500:hover {
+  background-color: #2563eb;
+  transform: scale(1.05);
+}
+
+/* Edit Existing Menu Button */
+button.bg-yellow-500 {
+  background-color: #f59e0b;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  margin-left: 30px;
+}
+
+button.bg-yellow-500:hover {
+  background-color: #d97706;
+  transform: scale(1.05);
+}
+
+/* Modal Background */
+.modal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+  z-index: 1000;
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 4px 6px rgba(0, 0)
+}
+/* Global styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Button styles */
+button {
+  cursor: pointer;
+  padding: 10px 20px;
+  font-size: 14px;
+  border: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #333;
+  color: white;
+}
+
+/* Menu Management Container */
+.menu-management {
+  padding: 20px;
+}
+
+/* Category Modal */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  background-color: white;
+  padding: 30px;
+  border-radius: 8px;
+  width: 300px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+h2, h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* Category Selection Modal Styles */
+.modal ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 10px 0;
+}
+
+.modal li {
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+}
+
+.modal li:hover {
+  background-color: #f5f5f5;
+}
+
+/* Input Group Styles */
+.input-group {
+  margin-bottom: 15px;
+}
+
+.input-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.input-group input:focus {
+  border-color: #4d90fe;
+  outline: none;
+}
+
+/* Image Option Styles */
+.image-option {
+  padding: 8px;
+  cursor: pointer;
+  text-align: center;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin: 5px;
+}
+
+.image-option.active {
+  background-color: #4d90fe;
+  color: white;
+}
+
+.image-input, .file-input {
+  width: 100%;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+/* Button Group */
+.btn-group {
+  display: flex;
+  justify-content: space-between;
+}
+
+.submit-btn {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.cancel-btn {
+  background-color: #f44336;
+  color: white;
+}
+
+.submit-btn:hover {
+  background-color: #45a049;
+}
+
+.cancel-btn:hover {
+  background-color: #e53935;
+}
+
+/* Modal Close Button */
+button.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: transparent;
+  color: #999;
+  font-size: 16px;
+}
+
+button.close:hover {
+  color: black;
+}
+body{
+  background-color: #c1aeba;
+}
+.category-item {
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 4px;
+}
+
+.category-item:hover {
+  background-color: #f0f0f0;
+}
+
+

@@ -307,6 +307,10 @@ app.post("/login", (req, res) => {
 });
 
 
+
+
+
+
 app.get("/latest-invoice", (req, res) => {
   const query = "SELECT invoice_no, date FROM invoices ORDER BY id DESC LIMIT 1";
   db.query(query, (err, result) => {
@@ -319,7 +323,227 @@ app.get("/latest-invoice", (req, res) => {
 });
 
 
+app.get("/api/menu", (req, res) => {
+  const sql = `
+    SELECT 
+      product AS name,
+      amount AS price
+    FROM stock_details
+  `;
+
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error("Error fetching stock menu:", err);
+      return res.status(500).json({ error: "Database error" });
+    }
+    res.json(results); // Send renamed data
+  });
+});
+
+app.get('/api/categories', (req, res) => {
+  const sql = 'SELECT category_id, category_name FROM categories';
+  db.query(sql, (err, results) => {
+    if (err) {
+      return res.status(500).json({ error: 'Failed to fetch categories' });
+    }
+    res.json(results); // [{ id: 1, categary_name: 'Lunch' }, ...]
+  });
+});
+
+
+app.post('/api/create', (req, res) => {
+  const {
+    category,
+    item_name,
+    description,
+    price,
+    availability,
+    size,
+    quantity,
+    image
+  } = req.body;
+
+  if (!category || !item_name || !price || !size || quantity == null || availability == null) {
+    return res.status(400).json({ error: 'Required fields are missing' });
+  }
+
+  // Step 1: Get category ID
+  const getCategoryQuery = 'SELECT category_id FROM categories WHERE category_name = ?';
+
+  db.query(getCategoryQuery, [category], (err, categoryResults) => {
+    if (err) {
+      console.error('Error fetching category:', err);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+
+    if (categoryResults.length === 0) {
+      return res.status(404).json({ error: 'Category not found' });
+    }
+
+    const categoryId = categoryResults[0].id;
+
+    // Step 2: Insert into menu_item
+    const insertQuery = `
+      INSERT INTO menu_item (
+        item_name,
+        category_id,
+        description,
+        price,
+        availability,
+        size,
+        quantity
+      ) VALUES (?, ?, ?, ?, ?, ?, ?)
+    `;
+
+    db.query(
+      insertQuery,
+      [item_name, categoryId, description, price, availability, size, quantity],
+      (err, result) => {
+        if (err) {
+          console.error('Error inserting menu item:', err);
+          return res.status(500).json({ error: 'Internal server error' });
+        }
+
+        res.status(201).json({
+          message: 'Menu item created successfully',
+          item_id: result.insertId,
+        });
+      }
+    );
+  });
+});
+
+
+// GET all categories
+app.get('/api/categories', (req, res) => {
+  const sql = 'SELECT * FROM categories';
+  db.query(sql, (err, results) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json(results);
+  });
+});
+
+
+
+
+
+
+
+
+// POST add a new category
+app.post('/api/categories/add', (req, res) => {
+  const { category_name } = req.body;
+  if (!category_name) return res.status(400).json({ error: 'Category name is required' });
+
+  const sql = 'INSERT INTO categories (category_name) VALUES (?)';
+  db.query(sql, [category_name], (err, result) => {
+    if (err) return res.status(500).json({ error: err.message });
+
+    const newCategory = {
+      category_id: result.insertId,
+      category_name,
+    };
+    res.status(201).json(newCategory);
+  });
+});
+
+// POST /api/menu-items/add
+app.post('/api/menu_items/add', (req, res) => {
+  const { name, description, price, quantity, category_id } = req.body;
+
+  if (!name || !price || !quantity || !category_id) {
+    return res.status(400).json({ error: 'All fields are required.' });
+  }
+
+  const query = 'INSERT INTO menu_items (item_name, description, price, quantity, category_id) VALUES (?, ?, ?, ?, ?)';
+  db.query(query, [name, description, price, quantity, category_id], (err, result) => {
+    if (err) {
+      console.error('Error inserting menu item:', err);
+      return res.status(500).json({ error: 'Database error' });
+    }
+
+    res.status(201).json({ id: result.insertId, name, description, price, quantity, category_id });
+  });
+});
+// get request to fetch the data from the table menu_items
+
+app.get('/api/menu_items/getall', (req,res)=>{
+  const sql = `SELECT 
+  mi.*, 
+  c.category_name 
+FROM 
+  menu_items mi
+JOIN 
+  categories c ON mi.category_id = c.category_id;
+`;
+  db.query(sql, (err, results) => {
+    if (err) {
+      return res.status(500).json({ error: 'Failed to fetch categories' });
+    }
+    res.json(results); 
+  });
+})
+
+// backend API for delete categary
+
+app.delete('/api/categories/delete/:id', async (req, res) => {
+  const categoryId = req.params.id;
+
+  try {
+    // Delete category from database
+    await db.query('DELETE FROM categories WHERE category_id = ?', [categoryId]);
+    res.status(200).json({ message: 'Category deleted successfully' });
+  } catch (err) {
+    console.error('Error deleting category:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+
+
+
+
+app.delete('/api/menu_items/delete/:id', (req, res) => {
+  const itemId = req.params.id;
+
+  const sql = 'DELETE FROM menu_items WHERE item_id = ?';
+  db.query(sql, [itemId], (err, result) => {
+    if (err) {
+      console.error('Error deleting item:', err);
+      return res.status(500).json({ error: 'Database error' });
+    }
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'Item not found' });
+    }
+
+    res.json({ message: 'Menu item deleted successfully' });
+  });
+});
+
+
+app.put('/api/menu_items/update/:id', (req, res) => {
+  const { name, price, category_id, description, quantity } = req.body; // Get description and quantity from the request body
+  const { id } = req.params;
+
+  // Update SQL query to include description and quantity
+  const sql = `UPDATE menu_items SET item_name = ?, price = ?, category_id = ?, description = ?, quantity = ? WHERE item_id = ?`;
+
+  // Execute the query with the additional fields (description and quantity)
+  db.query(sql, [name, price, category_id, description, quantity, id], (err, result) => {
+    if (err) {
+      console.error('Error updating item:', err);
+      return res.status(500).send('Error updating');
+    }
+    res.send('Updated successfully');
+  });
+});
+
+
+
+
+
 
 app.listen(5000, () => {
   console.log("Server is running on port 5000");
-});
+});    
